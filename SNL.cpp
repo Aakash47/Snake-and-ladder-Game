@@ -6,7 +6,8 @@ using namespace std;
 
 const int boardSize = 10;
 int board[boardSize][boardSize];
-
+int ladder[]={5,20,35,50,65,80,90}; //positions of ladders on board
+int snake[]={15,25,37,52,68,85,98}; //postion of snakes on board
 const char playerSymbol[2] = {'P', 'Q'};
 
 int random(int min, int max){
@@ -17,6 +18,26 @@ int random(int min, int max){
 int dice(){
     return random(1,6);
     }
+
+// Function to check if a position is a Snake
+bool isSnake(int position) {
+    for (int i = 0; i < sizeof(snake) / sizeof(snake[0]); ++i) {
+        if (position == snake[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function to check if a position is a ladder
+bool isLadder(int position) {
+    for (int i = 0; i < sizeof(ladder) / sizeof(ladder[0]); ++i) {
+        if (position == ladder[i]) {
+            return true;
+        }
+    }
+    return false;
+}
 
 void initializeBoard() {
     for (int i = 0; i < boardSize; ++i) {
@@ -34,17 +55,19 @@ void displayBoard(int player1Pos, int player2Pos) {
                 cout << playerSymbol[0] << "\t";  // Player 1 symbol
             } else if (board[i][j] == player2Pos) {
                 cout << playerSymbol[1] << "\t";  // Player 2 symbol
+            } else if (isSnake(board[i][j])){
+                cout<<"SN"<<"\t";
+            } else if (isLadder(board[i][j])){
+                cout<<"LD"<<"\t";
             } else {
                 cout << board[i][j] << "\t";
-            }
+            }            
         }
         cout << endl;
     }
 }
 
 int main(){
-    int ladder[]={5,20,35,50,65,80,90}; //positions of ladders on board
-    int snake[]={15,25,37,52,68,85,98}; //postion of snakes on board
     int maxplayer=2; //maximum players
     bool gameOver=false; //is game completed on not
     int current[maxplayer]={0}; //current postion of player defau;t is 0
