@@ -36,7 +36,6 @@ int main(){
 
         if (current[player]==0 && dice()!=6)
         {
-            // current[player] -= dice();
             cout<<"Game not started for player "<<player+1<<" as player not get 6 to start the game"<<endl;
         }
         else
@@ -125,7 +124,7 @@ int main(){
         }
 		
         player = (player+1) % maxplayer;
-        // system("pause");
+
         cout<<"Press Enter to continue game";
         cin.ignore();
     }
