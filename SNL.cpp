@@ -4,6 +4,11 @@
 
 using namespace std;
 
+const int boardSize = 10;
+int board[boardSize][boardSize];
+
+const char playerSymbol[2] = {'P', 'Q'};
+
 int random(int min, int max){
     srand(static_cast<unsigned int>(time(0)));
     return min+rand()%(max-min+1);
@@ -13,10 +18,33 @@ int dice(){
     return random(1,6);
     }
 
+void initializeBoard() {
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            board[i][j] = i * boardSize + j + 1;
+        }
+    }
+}
+
+// Function to display the game board
+void displayBoard(int player1Pos, int player2Pos) {
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            if (board[i][j] == player1Pos) {
+                cout << playerSymbol[0] << "\t";  // Player 1 symbol
+            } else if (board[i][j] == player2Pos) {
+                cout << playerSymbol[1] << "\t";  // Player 2 symbol
+            } else {
+                cout << board[i][j] << "\t";
+            }
+        }
+        cout << endl;
+    }
+}
+
 int main(){
     int ladder[]={5,20,35,50,65,80,90}; //positions of ladders on board
     int snake[]={15,25,37,52,68,85,98}; //postion of snakes on board
-    int board=100; //maximum numbers of postions on board
     int maxplayer=2; //maximum players
     bool gameOver=false; //is game completed on not
     int current[maxplayer]={0}; //current postion of player defau;t is 0
@@ -26,21 +54,25 @@ int main(){
     {
         system("cls");
         cout<<"Snake and Ladder Game!!!"<<endl;
+        cout<<"Player 1 is P"<<endl;
+        cout<<"Player 2 is Q"<<endl;
+        initializeBoard();
+        displayBoard(current[0],current[1]);
         cout<<"Palyer "<<player+1<<" chance."<<endl;
         cout<<"Press Enter to roll a dice";
         cin.ignore();
         cout<<"=================================="<<endl;
         cout<<"Player "<<player+1<<" rolled a "<<dice()<<endl;
-
-        cout<<"=================================="<<endl;
-
-        if (current[player]==0 && dice()!=6)
+        
+        if ((current[player]==0 & dice()!=6) & (current[player]==0 & dice()!=1))
         {
-            cout<<"Game not started for player "<<player+1<<" as player not get 6 to start the game"<<endl;
+            cout<<"=================================="<<endl;
+            cout<<"Game not started for player "<<player+1<<" as player not get 1 or 6 to start the game"<<endl;
         }
         else
         {
             current[player] += dice();
+
         }
         
         switch (current[player])
@@ -106,7 +138,13 @@ int main(){
             break;
         }
 
-        if (current[player] > board)
+        cout<<"=================================="<<endl;
+
+        displayBoard(current[0], current[1]);
+
+        cout<<"=================================="<<endl;
+
+        if (current[player] > 100)
         {
             current[player]-=dice();
             cout<<"player "<<player+1<<" didn't move as to score on dice more to reach home."<<endl;
@@ -117,7 +155,7 @@ int main(){
             cout<<"=================================="<<endl;
             gameOver= true;
         }
-        
+
         for (int i = 0; i < maxplayer; i++)
         {
             cout<<"Player "<<i+1<<" is at postion "<<current[i]<<endl;
